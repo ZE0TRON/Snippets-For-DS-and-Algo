@@ -30,11 +30,11 @@ class HeapPriorityQueue(PriorityQueueBase):
         return self._right(j) < len(self._data)
 
     def _swap(self,i,j):
-        self._data[i] , self._data[j] = self._data[j] , self.data[i]
+        self._data[i] , self._data[j] = self._data[j] , self._data[i]
 
     def _upheap(self,j):
         parent = self._parent(j)
-        if j > 0 and self._data[j] < self._data[parent]:
+        if j > 0 and self._data[j]._key < self._data[parent]._key:
             self._swap(j,parent)
             self._upheap(parent)
 
@@ -44,9 +44,9 @@ class HeapPriorityQueue(PriorityQueueBase):
             small_child = left
             if self._has_right(j):
                 right = self._right(j)
-                if self._data[right] < self._data[left]:
+                if self._data[right]._key < self._data[left]._key:
                     small_child = right
-            if self._data[small_child] < self._data[j]:
+            if self._data[small_child]._key < self._data[j]._key:
                 self._swap(j,small_child)
                 self._downheap(small_child)
 
@@ -58,8 +58,7 @@ class HeapPriorityQueue(PriorityQueueBase):
 
     def add(self,key,value):
         self._data.append(self._Item(key,value))
-        self._upheap(len(self_.data) - 1)
-
+        self._upheap(len(self._data) - 1)
     def min(self):
         if self.is_empty():
             print("Heap is empty")
@@ -67,11 +66,19 @@ class HeapPriorityQueue(PriorityQueueBase):
         return(item._key,item._value)
 
     def remove_min(self):
-
         if self.is_empty():
             print("Heap is empty")
         self._swap(0,len(self._data) -1)
         item = self._data.pop()
         self._downheap(0)
         return (item._key,item._value)
-                                           
+    def remove(self,values):
+        for i in range(len(self._data)):
+            if self._data[i]._key == values:
+                index= i
+        self._swap(index,len(self._data)-1)
+        item = self._data.pop()
+        self._downheap(index)
+    def printheap(self):
+        for i in range(len(self._data)):
+            print(self._data[i]._key,self._data[i]._value)
